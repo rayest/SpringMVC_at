@@ -4,6 +4,8 @@ import cn.rayest.statics.StaticInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -45,6 +47,15 @@ public class SpringMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/shortcut").setViewName("/shortcut");
+        registry.addViewController("/toUpload").setViewName("/upload"); // 相当于一个没有业务逻辑的控制器
+    }
+
+    // 配置文件上传解析器
+    @Bean
+    public MultipartResolver multipartResolver(){
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(1000000);
+        return multipartResolver;
     }
 
     // 重写方法，不能忽略请求参数 “.” 等等
