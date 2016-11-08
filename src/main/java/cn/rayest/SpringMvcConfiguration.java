@@ -4,10 +4,7 @@ import cn.rayest.statics.StaticInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -43,5 +40,11 @@ public class SpringMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(staticInterceptor());
+    }
+
+    // 重写方法，注册视图控制层。访问路径和视图名称
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/shortcut").setViewName("/shortcut");
     }
 }
