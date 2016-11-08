@@ -1,9 +1,13 @@
 package cn.rayest;
 
+import cn.rayest.statics.StaticInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -13,7 +17,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @ComponentScan("cn.rayest")
-public class SpringMvcConfiguration {
+public class SpringMvcConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -21,5 +25,23 @@ public class SpringMvcConfiguration {
         viewResolver.setSuffix(".jsp");
         viewResolver.setViewClass(JstlView.class);
         return viewResolver;
+    }
+
+    //重写方法，添加静态资源的放置目录和访问路径
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry){
+        registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/assets/");
+    }
+
+    // 配置拦截器
+    @Bean
+    public StaticInterceptor staticInterceptor(){
+        return new StaticInterceptor();
+    }
+
+    // 重写方法，注册拦截器
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(staticInterceptor());
     }
 }

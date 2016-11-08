@@ -18,10 +18,8 @@ public class WebInitializer implements WebApplicationInitializer{
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(SpringMvcConfiguration.class);
         context.setServletContext(servletContext);
-
         ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
         servlet.addMapping("/");
         servlet.setLoadOnStartup(1);
-
     }
 }
