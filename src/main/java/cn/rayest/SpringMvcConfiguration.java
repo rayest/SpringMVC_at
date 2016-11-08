@@ -35,16 +35,21 @@ public class SpringMvcConfiguration extends WebMvcConfigurerAdapter {
     public StaticInterceptor staticInterceptor(){
         return new StaticInterceptor();
     }
-
     // 重写方法，注册拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(staticInterceptor());
     }
 
-    // 重写方法，注册视图控制层。访问路径和视图名称
+    // 重写方法，注册视图控制层。访问路径和视图名称：/shortcut
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/shortcut").setViewName("/shortcut");
+    }
+
+    // 重写方法，不能忽略请求参数 “.” 等等
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+         configurer.setUseSuffixPatternMatch(false);
     }
 }
