@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class AdviceController {
     @RequestMapping(value = "/advice", method = RequestMethod.GET)
-    public String get(@ModelAttribute("message") String message){
+    public String get(@ModelAttribute("message") String message, Global global){
         throw new IllegalArgumentException("参数有误，来自 " + "@ModelAttribute:" + message);
     }
 }
