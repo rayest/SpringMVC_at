@@ -1,14 +1,18 @@
 package cn.rayest;
 
+import cn.rayest.converter.MessageConverter;
 import cn.rayest.statics.StaticInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+
+import java.util.List;
 
 /**
  * Created by Rayest on 2016/11/8 0008.
@@ -46,8 +50,9 @@ public class SpringMvcConfiguration extends WebMvcConfigurerAdapter {
     // 重写方法，注册视图控制层。访问路径和视图名称：/shortcut
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/shortcut").setViewName("/shortcut");
-        registry.addViewController("/toUpload").setViewName("/upload"); // 相当于一个没有业务逻辑的控制器
+        registry.addViewController("/shortcut").setViewName("/shortcut"); // 相当于一个没有业务逻辑的控制器
+        registry.addViewController("/toUpload").setViewName("/upload");
+        registry.addViewController("/converter").setViewName("/converter");
     }
 
     // 配置文件上传解析器
@@ -62,5 +67,15 @@ public class SpringMvcConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
          configurer.setUseSuffixPatternMatch(false);
+    }
+
+    // 仅添加一个自定义的 HttpMessageConverter，不覆盖默认注册的
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(messageConverter());
+    }
+    @Bean
+    public MessageConverter messageConverter(){
+        return new MessageConverter();
     }
 }
