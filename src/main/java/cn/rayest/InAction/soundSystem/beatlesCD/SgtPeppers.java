@@ -1,5 +1,6 @@
-package cn.rayest.InAction.soundSystem;
+package cn.rayest.InAction.soundSystem.beatlesCD;
 
+import cn.rayest.InAction.soundSystem.CompactDisc;
 import org.springframework.stereotype.Component;
 
 /**
